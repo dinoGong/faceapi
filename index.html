@@ -12,7 +12,7 @@
     <h1>faceAPI.org</h1>
     <input id="select_pic" type="file" >
     <button id="post" type="button" class="btn btn-primary">
-      测测颜值
+      测测年龄
     </button>
     <div id="img">
     <img id="in_img" style="max-width:100%;">
@@ -97,14 +97,14 @@
                 context.strokeRect(left,top,width,height);
                 context.font="20px Arial"
                 context.fillText("年龄："+age,left,top+height+30);
-                context.fillText("颜值："+beauty+" 分",left,top+height+55);
-                $('#post').text('测测颜值');
+                //context.fillText("颜值："+beauty+" 分",left,top+height+55);
+                $('#post').text('测测年龄');
                 $('#post').prop("disabled", false);
               }
           },
           error: function (json) {
               console.dir(json);
-              $('#post').text('测测颜值');
+              $('#post').text('测测年龄');
               $('#post').prop("disabled", false);
           }
       });
