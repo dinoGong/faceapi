@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>FaceApi</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
   <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 </head>
@@ -49,7 +50,7 @@
                draw();
           };
           $('#in_img').attr('src', data);
-          base64=data.split(",")[1];
+          base64=data;
       });
   });
 
@@ -57,7 +58,7 @@
       $('#post').prop("disabled", true);
       $.ajax({
           url: "http://dc06b04e-334c-4040-b881-cddca9c8f48f.coding.io/face_detect.php",
-          type: "GET",
+          type: "POST",
           dataType: "jsonp",
           //dataType: "json",
           data: {
