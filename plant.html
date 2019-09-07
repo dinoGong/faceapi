@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+<head>
+  <title>FaceApi</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <h1>faceAPI.org</h1>
+    <input id="select_pic" type="file" >
+    <p id="name"></p>
+    <button id="post" type="button" class="btn btn-primary">
+      测测这货是啥植物？
+    </button>
+    <div id="img">
+    <img id="in_img" style="max-width:100%;">
+    </div>
+
+  <script>
+  var base64="";
+  $("#select_pic").change(function () {
+      run(this, function (data) {
+          $('#in_img').attr('src', data);
+          base64=data;
+      });
+  });
+
+  $("#post").click(function () {
+      $('#post').text('检测中。。。');
+      $('#post').prop("disabled", true);
+      $.ajax({
+          url: "http://dc06b04e-334c-4040-b881-cddca9c8f48f.coding.io/api_plant.php",
+          type: "POST",
+          dataType: "json",
+          data: {
+              "img_base64": base64,
+          },
+          async: true,
+          success: function (json) {
+
+              if(json.hasOwnProperty('result')){
+                result=json.result;
+                if(result.hasOwnProperty(0)){
+                  obj=result[0];
+                  if(obj.hasOwnProperty('name')){
+                    name=obj.name;
+                    $('#name').text(name);
+                  }
+                }else{
+                  $('#name').text('这货不是植物哈～');
+                }
+              }else{
+                $('#name').text('MMP 啥都没检查出来！');
+              }
+              console.log(json);
+              $('#post').text('测测这货是啥植物？');
+              $('#post').prop("disabled", false);
+          },
+          error: function (json) {
+              console.dir(json);
+              $('#post').text('测测这货是啥植物？');
+              $('#post').prop("disabled", false);
+          }
+      });
+  });
+
+  function run(input_file, get_data) {
+      /*input_file：文件按钮对象*/
+      /*get_data: 转换成功后执行的方法*/
+      if (typeof (FileReader) === 'undefined') {
+      } else {
+          try {
+              /*图片转Base64 核心代码*/
+              var file = input_file.files[0];
+              //这里我们判断下类型如果不是图片就返回 去掉就可以上传任意文件
+              if (!/image\/\w+/.test(file.type)) {
+                  return false;
+              }
+              var reader = new FileReader();
+              reader.onload = function () {
+                  get_data(this.result);
+              }
+              reader.readAsDataURL(file);
+          } catch (e) {
+          }
+      }
+  }
+  </script>
+</body>
+</html>
